@@ -29,4 +29,18 @@ func main() {
 		}(i)
 	}
 
+	for i := 0; i < M; i++ {
+		go func(readerID int) {
+			for {
+				<-readCh // Wait for data to be written
+				mutex.Lock()
+				fmt.Printf("Reader %d read from buffer: %d\n", readerID, buffer[0]) // Simulate reading from buffer
+				mutex.Unlock()
+				time.Sleep(60 * time.Millisecond)
+			}
+		}(i)
+	}
+
+	select {}
+
 }
